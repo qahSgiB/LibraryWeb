@@ -44,12 +44,15 @@ class Server(BaseHTTPRequestHandler):
 
         self.end_headers()
 
-    def sendContent(self, content, encoding='UTF-8'):
-        self.wfile.write(bytes(content, encoding))
+    def sendContent(self, content, encoding, isBytes):
+        if not isBytes:
+            content = bytes(content, encoding)
 
-    def send(self, content, status, headers, encoding='UTF-8'):
+        self.wfile.write(content)
+
+    def send(self, content, status, headers, encoding='UTF-8', isBytes=False):
         self.sendHeaders(status, headers)
-        self.sendContent(content, encoding)
+        self.sendContent(content, encoding, isBytes)
 
     def handleGet(self, path, postData=None):
         pathString = path
@@ -80,13 +83,13 @@ class Server(BaseHTTPRequestHandler):
 
             self.send(content, status, headers)
         elif extension in self.handleAsPublic:
-            content, status, headers, error = self.handlePublic(path, extension)
+            content, status, headers, error, isBytes = self.handlePublic(path, extension)
 
             if error is not None:
                 content = ''
                 headers['Content-type'] = 'text/plain'
 
-            self.send(content, status, headers)
+            self.send(content, status, headers, isBytes=isBytes)
 
     def handlePublic(self, path, extension):
         content = None
@@ -94,12 +97,13 @@ class Server(BaseHTTPRequestHandler):
         status = 200
         contentType = self.publicContentTypes[extension]
         headers = {'Content-type': '/'.join(contentType)}
+        isBytes = False
 
         if extension == 'css':
             headers['Content-type'] = 'text/css'
 
         route = path
-        contentPath = Path(f'page/public/{extension}{route}')
+        contentPath = Path(f'page/public/{route}')
 
         if contentPath.is_file():
             readMethod = None
@@ -107,6 +111,7 @@ class Server(BaseHTTPRequestHandler):
                 readMethod = 'r'
             else:
                 readMethod = 'rb'
+                isBytes = True
 
             with open(contentPath, readMethod) as contentFile:
                 content = contentFile.read()
@@ -114,7 +119,7 @@ class Server(BaseHTTPRequestHandler):
             error = 'not_found'
             status = 404
 
-        return content, status, headers, error
+        return content, status, headers, error, isBytes
 
     def handleHtml(self, path, getData, postData):
         content = None
