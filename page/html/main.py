@@ -1,17 +1,9 @@
-from pyPage.Template import templatePath
+from pyPage.Template import Template
 
 
 
 def render(getData=None, postData=None):
-    html = None
-    with open(templatePath('main.html'), 'r') as htmlFile:
-        html = htmlFile.read()
+    template = Template.load('main/main.html')
 
-    is_ = [f'<p>i: {i}</p>' for i in range(5)]
-    is_ = ''.join(is_)
-
-    context = {
-        'is': is_
-    }
-
-    return html.format(**context)
+    context = {}
+    return template.format(context)

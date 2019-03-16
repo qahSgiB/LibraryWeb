@@ -1,38 +1,28 @@
-from pyPage.Template import templatePath
+from pyPage.Template import Template
 
-from main import database
+from main import findBooks
 
 
 
 def render(getData=None, postData=None):
-    html = None
-    with open(templatePath('search.html'), 'r') as htmlFile:
-        html = htmlFile.read()
-
     searchBook = getData['search']
-    print(searchBook)
+    resultBooks = findBooks(searchBook)
 
-    books = database['books'].find({})
-    bookFound = None
+    resultBookContexts = []
+    for resultBook in resultBooks:
+        resultBookContexts.append({
+            'title': resultBook['title'],
+            'author': resultBook['author'],
+            'available': resultBook['available'],
+        })
 
-    for book in books:
-        if searchBook == book['title']:
-            bookFound = book
-
-        if bookFound != None:
-            break
-
-    bookHtml = None
-    if bookFound == None:
-        bookHtml = '<p>Book not found</p>'
-    else:
-        title = bookFound['title']
-        author = bookFound['author']
-
-        bookHtml = f'{title}_{author}'
+    resultBookTemplate = Template.load('search/searchResult.html')
+    resultBooksHtml = resultBookTemplate.formatMultiple(resultBookContexts)
 
     context = {
-        'book': bookHtml,
+        'results': resultBooksHtml,
     }
 
-    return html.format(**context)
+    template = Template.load('search/search.html')
+
+    return template.format(context)
