@@ -30,8 +30,6 @@ def main():
     port = 8080
     handlerFactory = Server.factory(htmlRoutes, errorRoutes)
 
-    # testing
-
     with socketserver.TCPServer((address, port), handlerFactory) as httpServer:
         try:
             print(f'HTTP server on ({address}:{port})')
