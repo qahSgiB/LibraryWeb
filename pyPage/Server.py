@@ -3,6 +3,7 @@ from pathlib import Path
 import importlib.util
 
 from pyPage.DecodeData import decodeData
+from pyPage.Template import HtmlTemplate, PyTemplate
 
 
 
@@ -129,19 +130,14 @@ class Server(BaseHTTPRequestHandler):
 
         if path in list(self.routes.keys()):
             route = self.routes[path]
-            contentPath = Path('page/html'+route)
+            contentPath = 'page/views'+route
 
-            if contentPath.is_file():
-                extension = route.split('.')[1]
-                if extension == 'html':
-                    with open(contentPath, 'r') as contentFile:
-                        content = contentFile.read()
-                elif extension == 'py':
-                    spec = importlib.util.spec_from_file_location('pyHtml', contentPath)
-                    module = importlib.util.module_from_spec(spec)
-                    spec.loader.exec_module(module)
+            if Path(contentPath).is_file():
+                spec = importlib.util.spec_from_file_location('page/views', contentPath)
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
 
-                    content = module.render(getData, postData)
+                content = module.view(getData, postData)
             else:
                 error = 'not_found'
                 status = 404
@@ -151,5 +147,6 @@ class Server(BaseHTTPRequestHandler):
 
         return content, status, headers, error
 
+    @staticmethod
     def factory(*fargs):
         return lambda *args, **params: Server(*fargs, *args, **params)
