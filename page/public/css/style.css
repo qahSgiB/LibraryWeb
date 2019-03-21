@@ -131,11 +131,49 @@ div.results {
     margin-bottom: 1.5vw;
 }
 
-div.bookInfo {
+a.bookInfo {
     width: 60vw;
 
     margin-top: 1vw;
     margin-bottom: 2vw;
+
+    text-decoration: none;
+    color: black;
+}
+
+div.bookInfo {
+    padding-top: 1vw;
+    padding-bottom: 0.5vw;
+
+    border-style: solid;
+    border-width: 3px;
+    border-color: white;
+}
+
+div.bookInfo:hover {
+    border-color: black;
+}
+
+div.bookInfo:hover > p.title {
+    animation-name: moveBookResultTitle;
+    animation-duration: 0.5s;
+
+    transform: translateX(4vw);
+}
+
+div.bookInfo:hover > p.author, div.bookInfo:hover > p.available {
+    animation-name: moveBookResultInfo;
+    animation-duration: 0.5s;
+}
+
+@keyframes moveBookResultTitle {
+    from {transform: translateX(0px);}
+    to {transform: translateX(4vw);}
+}
+
+@keyframes moveBookResultInfo {
+    from {transform: translateX(0px);}
+    to {transform: translateX(3vw);}
 }
 
 p.title {

@@ -1,11 +1,9 @@
-from pyPage.Template import HtmlTemplate
-
-import importlib.util
+from pyPage.Template import PyTemplate, HtmlTemplate
 
 
 
 def render(resultBookContexts):
-    resultBookTemplate = HtmlTemplate.load('search/searchResult.html')
+    resultBookTemplate = PyTemplate.load('search/searchResult.py')
     resultBooksHtml = resultBookTemplate.formatMultiple(resultBookContexts)
 
     context = {

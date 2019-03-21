@@ -16,4 +16,4 @@ def view(getData, postData):
             'available': resultBook['available'],
         })
 
-    return PyTemplate.load('search.py').format(resultBookContexts)
+    return PyTemplate.load('search/search.py').format(resultBookContexts)
