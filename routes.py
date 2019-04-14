@@ -1,6 +1,7 @@
 htmlRoutes = {
     '/': '/main.py',
     '/search': '/search.py',
+    '/user/signup': '/user_signup.py',
 }
 
 errorRoutes = {

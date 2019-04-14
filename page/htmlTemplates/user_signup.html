@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/css/base.css">
+        <link rel="stylesheet" type="text/css" href="/css/user_signup.css">
+
+        <link rel="icon" href="/icons/icon.png" sizes="32x32">
+        <title>GJHLibrary</title>
+    </head>
+    <body>
+        <div class="base">
+            <div class="signupPanel">
+                <form action="/user/signedup" method="POST">
+                    <div class="signupField">
+                        <p class="signupFieldTitle">First name</p>
+                        <input type="text" name="first_name" autocomplete="off" spellcheck="false" class="signupField">
+                    </div>
+                    <div class="signupField">
+                        <p class="signupFieldTitle">Last name</p>
+                        <input type="text" name="last_name" autocomplete="off" spellcheck="false" class="signupField">
+                    </div>
+                    <div class="signupField">
+                        <p class="signupFieldTitle">Mail</p>
+                        <input type="text" name="mail" autocomplete="off" spellcheck="false" class="signupField">
+                    </div>
+                    <div class="signupField">
+                        <p class="signupFieldTitle">Isic number</p>
+                        <input type="text" name="isic_number" autocomplete="off" spellcheck="false" class="signupField">
+                    </div>
+                    <input type="submit" value="Search" class="signup">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

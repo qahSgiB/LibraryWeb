@@ -8,7 +8,7 @@ def render(resultBookContext):
 
     if available > 0:
         availableText = f'{available} pieces available'
-    elif resultBookContext['available'] == 0:
+    elif available == 0:
         availableText = 'Item is currently not avialable'
 
     context = {

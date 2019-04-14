@@ -4,6 +4,7 @@ import importlib.util
 
 from pyPage.DecodeData import decodeData
 from pyPage.Template import HtmlTemplate, PyTemplate
+from pyPage.Cookie import Cookie
 
 
 
@@ -12,13 +13,14 @@ class Server(BaseHTTPRequestHandler):
         self.routes = routes
         self.errorRoutes = errorRoutes
 
-        self.handleAsPublic = ['css', 'js', 'jpg', 'jpeg', 'png']
+        self.handleAsPublic = ['css', 'js', 'jpg', 'jpeg', 'png', 'ico']
         self.publicContentTypes = {
             'css': ['text', 'css'],
             'js': ['text', 'javascript'],
             'jpg': ['image', 'jpg'],
             'jpeg': ['image', 'jpeg'],
             'png': ['image', 'png'],
+            'ico': ['image', 'ico'], # ??
         }
 
         super().__init__(*args, **params)
@@ -37,11 +39,20 @@ class Server(BaseHTTPRequestHandler):
 
         return decodeData(postDataString)
 
-    def sendHeaders(self, status, headers):
+    def getCookies(self):
+        cookiesHTTP = self.headers['Cookie']
+        cookies = Cookie.loadFromHTTP(cookiesHTTP)
+
+        return cookies
+
+    def sendHeaders(self, status, headers, cookies):
         self.send_response(status)
 
         for headerName, headerValue in headers.items():
             self.send_header(headerName, headerValue)
+
+        for cookie in cookies:
+            self.send_header('Set-cookie', cookie.getHTTP())
 
         self.end_headers()
 
@@ -51,21 +62,23 @@ class Server(BaseHTTPRequestHandler):
 
         self.wfile.write(content)
 
-    def send(self, content, status, headers, encoding='UTF-8', isBytes=False):
-        self.sendHeaders(status, headers)
+    def send(self, content, status, headers, cookies, encoding='UTF-8', isBytes=False):
+        self.sendHeaders(status, headers, cookies)
         self.sendContent(content, encoding, isBytes)
 
     def handleGet(self, path, postData=None):
         pathString = path
 
         pathStringSplitted = pathString.split('?')
-
         path = pathStringSplitted[0]
+
         getData = None
 
         if len(pathStringSplitted) > 1:
             getDataString = pathStringSplitted[1]
             getData = decodeData(getDataString)
+
+        cookies = self.getCookies()
 
         extension = None
 
@@ -76,13 +89,13 @@ class Server(BaseHTTPRequestHandler):
             extension = splittedPath[-1]
 
         if extension == 'html':
-            content, status, headers, error = self.handleHtml(path, getData, postData)
+            content, status, headers, sendCookies, error = self.handleHtml(path, getData, postData, cookies)
             if error is not None:
-                errorContentPath = Path('page/html'+self.errorRoutes[error])
+                errorContentPath = Path('page/htmlTemplates'+self.errorRoutes[error])
                 with open(errorContentPath, 'r') as contentFile:
                     content = contentFile.read()
 
-            self.send(content, status, headers)
+            self.send(content, status, headers, sendCookies)
         elif extension in self.handleAsPublic:
             content, status, headers, error, isBytes = self.handlePublic(path, extension)
 
@@ -90,7 +103,7 @@ class Server(BaseHTTPRequestHandler):
                 content = ''
                 headers['Content-type'] = 'text/plain'
 
-            self.send(content, status, headers, isBytes=isBytes)
+            self.send(content, status, headers, [], isBytes=isBytes)
 
     def handlePublic(self, path, extension):
         content = None
@@ -99,9 +112,6 @@ class Server(BaseHTTPRequestHandler):
         contentType = self.publicContentTypes[extension]
         headers = {'Content-type': '/'.join(contentType)}
         isBytes = False
-
-        if extension == 'css':
-            headers['Content-type'] = 'text/css'
 
         route = path
         contentPath = Path(f'page/public/{route}')
@@ -122,7 +132,7 @@ class Server(BaseHTTPRequestHandler):
 
         return content, status, headers, error, isBytes
 
-    def handleHtml(self, path, getData, postData):
+    def handleHtml(self, path, getData, postData, cookies):
         content = None
         error = None
         status = 200
@@ -137,7 +147,7 @@ class Server(BaseHTTPRequestHandler):
                 module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(module)
 
-                content = module.view(getData, postData)
+                content, cookies = module.view(getData, postData, cookies)
             else:
                 error = 'not_found'
                 status = 404
@@ -145,7 +155,7 @@ class Server(BaseHTTPRequestHandler):
             error = 'not_found'
             status = 404
 
-        return content, status, headers, error
+        return content, status, headers, cookies, error
 
     @staticmethod
     def factory(*fargs):

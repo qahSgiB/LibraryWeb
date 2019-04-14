@@ -1,24 +1,29 @@
-/* ------------------------------------- default ------------------------------------- */
-body {
-    margin: 0px;
-}
-
-p {
-    margin: 0px;
-}
-
-form {
-    margin: 0px;
-}
-
-/* ------------------------------------- ? ------------------------------------- */
 div.base {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+div.leftPanel {
+    width: 15vw;
+}
+
+div.mainPanel {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    width: 70vw;
 }
 
-/* ------------------------------------- main ------------------------------------- */
+div.rightPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    width: 15vw;
+}
+
 div.logo {
     margin-top: 4vw;
     margin-bottom: 1.5vw;
@@ -121,75 +126,38 @@ input[type=submit].search:focus {
     outline: none;
 }
 
-/* ------------------------------------- searchResult ------------------------------------- */
-div.results {
+div.account {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 
-    margin-top: 4vw;
-    margin-bottom: 1.5vw;
-}
+    margin-top: 2.5vw;
+    margin-right: 2.5vw;
 
-a.bookInfo {
-    width: 60vw;
-
-    margin-top: 1vw;
-    margin-bottom: 2vw;
-
-    text-decoration: none;
-    color: black;
-}
-
-div.bookInfo {
-    padding-top: 1vw;
-    padding-bottom: 0.5vw;
+    padding-top: 1.5vw;
+    padding-bottom: 1.5vw;
+    padding-left: 1.9vw;
+    padding-right: 1.9vw;
 
     border-style: solid;
-    border-width: 3px;
-    border-color: white;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
 }
 
-div.bookInfo:hover {
-    border-color: black;
-}
-
-div.bookInfo:hover > p.title {
-    animation-name: moveBookResultTitle;
-    animation-duration: 0.5s;
-
-    transform: translateX(4vw);
-}
-
-div.bookInfo:hover > p.author, div.bookInfo:hover > p.available {
-    animation-name: moveBookResultInfo;
-    animation-duration: 0.5s;
-}
-
-@keyframes moveBookResultTitle {
-    from {transform: translateX(0px);}
-    to {transform: translateX(4vw);}
-}
-
-@keyframes moveBookResultInfo {
-    from {transform: translateX(0px);}
-    to {transform: translateX(3vw);}
-}
-
-p.title {
-    margin-top: 0.1vw;
-    margin-bottom: 0.1vw;
-    margin-left: 1vw;
-
-    font-size: 4vw;
-    font-family: 'Montserrat', sans-serif;
-}
-
-p.author, p.available {
-    margin-top: 0.8vw;
-    margin-bottom: 0.8vw;
-    margin-left: 5vw;
+a.account {
+    margin-top: 0.3vw;
+    margin-bottom: 0.3vw;
 
     font-size: 1.2vw;
     font-family: 'Montserrat', sans-serif;
+    color: rgb(0, 0, 0);
+
+    text-decoration-line: underline;
+    text-decoration-color: rgb(0, 0, 0);
+    text-decoration-style: solid;
+}
+
+a.account:hover, a.account:active {
+    text-decoration-line: line-through;
+    text-decoration-style: dashed;
 }

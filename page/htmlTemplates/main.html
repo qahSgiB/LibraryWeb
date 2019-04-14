@@ -1,28 +1,42 @@
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="/css/base.css">
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
 
+        <link rel="icon" href="/icons/icon.png" sizes="32x32">
         <title>GJHLibrary</title>
     </head>
     <body>
         <div class="base">
-            <div class="logo">
-                <img src="images/logo.png" alt="Ou fuck :(">
-            </div>
+            <div class="leftPanel">
 
-            <div class="info">
-                <p class="info">Helou this is GJH Library page</p>
-                <p class="info">Use search box to search books by title</p>
-                <p class="infoFuture">(Only planned feature) Click more for advanced setting</p>
             </div>
+            <div class="mainPanel">
+                <div class="logo">
+                    <img src="images/logo.png" alt="Ou fuck :(">
+                </div>
 
-            <div class="search">
-                <form action="/search" method="get">
-                    <input type="text" name="search" autocomplete="off" spellcheck="false" placeholder="type here" class="search">
-                    <input type="submit" value="Search" class="search">
-                </form>
+                <div class="info">
+                    <p class="info">Helou this is GJH Library page</p>
+                    <p class="info">Use search box to search books by title</p>
+                    <p class="infoFuture">(Only planned feature) Click more for advanced setting</p>
+                </div>
+
+                <div class="search">
+                    <form action="/search" method="get">
+                        <input type="text" name="search" autocomplete="off" spellcheck="false" placeholder="type here" class="search">
+                        <input type="submit" value="Search" class="search">
+                    </form>
+                </div>
+            </div>
+            <div class="rightPanel">
+                <div class="account">
+                    <a class="account" href="/user/login">Log in</a>
+                    <a class="account" href="/user/signup">Sign up</a>
+                </div>
             </div>
         </div>
     </body>
