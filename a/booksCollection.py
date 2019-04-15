@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from a.mongo import booksCollection
 
 
 
@@ -7,7 +7,7 @@ def findBooks(searchBook):
         return True
         # return searchBook == book['title']
 
-    books = database['books'].find({})
+    books = booksCollection.find({})
     booksFound = []
 
     for book in books:
@@ -15,7 +15,3 @@ def findBooks(searchBook):
             booksFound.append(book)
 
     return booksFound
-
-
-
-database = MongoClient('localhost', 27017)['books']

@@ -1,5 +1,10 @@
 from pyPage.Template import HtmlTemplate
 from pyPage.Cookie import Cookie
+from pyPage.settings.view import getDefaultSettings
+
+
+
+settings = getDefaultSettings()
 
 
 

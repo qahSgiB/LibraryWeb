@@ -1,4 +1,9 @@
 from pyPage.Template import HtmlTemplate
+from pyPage.settings.view import getDefaultSettings
+
+
+
+settings = getDefaultSettings()
 
 
 

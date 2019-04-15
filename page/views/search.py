@@ -1,6 +1,11 @@
 from pyPage.Template import PyTemplate
+from pyPage.settings.view import getDefaultSettings
 
-from a.a import findBooks
+from a.booksCollection import findBooks
+
+
+
+settings = getDefaultSettings()
 
 
 

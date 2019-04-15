@@ -45,6 +45,10 @@ class Server(BaseHTTPRequestHandler):
 
         return cookies
 
+    def send(self, content, status, headers, cookies, encoding='UTF-8', isBytes=False):
+        self.sendHeaders(status, headers, cookies)
+        self.sendContent(content, encoding, isBytes)
+
     def sendHeaders(self, status, headers, cookies):
         self.send_response(status)
 
@@ -61,10 +65,6 @@ class Server(BaseHTTPRequestHandler):
             content = bytes(content, encoding)
 
         self.wfile.write(content)
-
-    def send(self, content, status, headers, cookies, encoding='UTF-8', isBytes=False):
-        self.sendHeaders(status, headers, cookies)
-        self.sendContent(content, encoding, isBytes)
 
     def handleGet(self, path, postData=None):
         pathString = path
@@ -133,10 +133,11 @@ class Server(BaseHTTPRequestHandler):
         return content, status, headers, error, isBytes
 
     def handleHtml(self, path, getData, postData, cookies):
-        content = None
+        content = ''
         error = None
         status = 200
         headers = {'Content-type': 'text/html'}
+        sendCookies = []
 
         if path in list(self.routes.keys()):
             route = self.routes[path]
@@ -147,7 +148,12 @@ class Server(BaseHTTPRequestHandler):
                 module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(module)
 
-                content, cookies = module.view(getData, postData, cookies)
+                if module.settings['isRedirect']:
+                    status = 303
+                    newLocation, sendCookies = module.redirect(getData, postData, cookies)
+                    headers['Location'] = newLocation
+                else:
+                    content, sendCookies = module.view(getData, postData, cookies)
             else:
                 error = 'not_found'
                 status = 404
@@ -155,7 +161,7 @@ class Server(BaseHTTPRequestHandler):
             error = 'not_found'
             status = 404
 
-        return content, status, headers, cookies, error
+        return content, status, headers, sendCookies, error
 
     @staticmethod
     def factory(*fargs):

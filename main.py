@@ -1,3 +1,9 @@
+#
+#   How to run this
+#       1. python main.py
+#       2. In bowser open http://127.0.0.1:8080
+#
+
 import socketserver
 
 from pyPage.Server import Server
