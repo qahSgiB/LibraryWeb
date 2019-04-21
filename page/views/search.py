@@ -25,4 +25,9 @@ def view(getData, postData, cookies, sessionCookie):
             'available': resultBook['available'],
         })
 
-    return PyTemplate.load('search/search.py').format(resultBookContexts), []
+    context = {
+        'response': PyTemplate.load('search/search.py').format(resultBookContexts),
+        'sessionCookie': sessionCookie,
+    }
+
+    return PyTemplate.load('accountBase.py').format(context), []

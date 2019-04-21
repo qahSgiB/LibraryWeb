@@ -4,16 +4,17 @@ from a.sessionCollection import getSessionUser
 
 
 
-def render(context):
-    renderNext = context['next']
-    contextNext = context['context']
-    sessionCookie = context['sessionCookie']
+def render(baseContext):
+    context = {}
 
+    sessionCookie = baseContext['sessionCookie']
     user = getSessionUser(sessionCookie.value)
 
     if user == None:
-        contextNext['account'] = HtmlTemplate('accountBase/logedout.html').format({})
+        context['account'] = HtmlTemplate.load('accountBase/logedout.html').format({})
     else:
-        contextNext['account'] = HtmlTemplate('accountBase/logedin.html').format({})
+        context['account'] = HtmlTemplate.load('accountBase/logedin.html').format({})
 
-    return renderNext.format(contextNext)
+    response = baseContext['response']
+
+    return HtmlTemplate(response).format(context)

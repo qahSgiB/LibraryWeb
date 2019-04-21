@@ -1,4 +1,4 @@
-from pyPage.Template import HtmlTemplate
+from pyPage.Template import HtmlTemplate, PyTemplate
 from pyPage.Cookie import Cookie
 from pyPage.settings.view import getDefaultSettings
 
@@ -13,6 +13,9 @@ settings = getDefaultSettings()
 def view(getData, postData, cookies, sessionCookie):
     # user = getSessionUser(sessionCookie.value)
 
-    context = {}
+    context = {
+        'response': HtmlTemplate.load('main.html').format({}),
+        'sessionCookie': sessionCookie,
+    }
 
-    return HtmlTemplate.load('main.html').format(context), []
+    return PyTemplate.load('accountBase.py').format(context), []

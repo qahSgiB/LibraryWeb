@@ -10,26 +10,28 @@
         <title>GJHLibrary</title>
     </head>
     <body>
-        <div class="base">
-            <div class="loginPanel">
-                <form action="/user/logedin" method="POST">
-                    <div class="loginTitle">
-                        <p class="loginTitle">GJHLibrary</p>
-                        <p class="loginTitleDetail">Log in</p>
-                    </div>
-                    <div class="loginField">
-                        <p class="loginFieldTitle">Mail</p>
-                        <input type="text" name="mail" autocomplete="off" spellcheck="false" class="loginField" value={errorMail}>
-                    </div>
-                    <div class="loginField">
-                        <p class="loginFieldTitle">Password</p>
-                        <input type="password" name="password" autocomplete="off" spellcheck="false" class="loginField">
-                    </div>
-                    {errorMessage}
-                    <div class="submitPanel">
-                        <input type="submit" value="Log in" class="login">
-                    </div>
-                </form>
+        <div class="basePanel">
+            <div class="base">
+                <div class="loginPanel">
+                    <form action="/user/logedin" method="POST">
+                        <div class="loginTitle">
+                            <p class="loginTitle">GJHLibrary</p>
+                            <p class="loginTitleDetail">Log in</p>
+                        </div>
+                        <div class="loginField">
+                            <p class="loginFieldTitle">Mail</p>
+                            <input type="text" name="mail" autocomplete="off" spellcheck="false" class="loginField" value={errorMail}>
+                        </div>
+                        <div class="loginField">
+                            <p class="loginFieldTitle">Password</p>
+                            <input type="password" name="password" autocomplete="off" spellcheck="false" class="loginField">
+                        </div>
+                        {errorMessage}
+                        <div class="submitPanel">
+                            <input type="submit" value="Log in" class="login">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </body>

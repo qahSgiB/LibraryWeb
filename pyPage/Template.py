@@ -2,6 +2,11 @@ import importlib.util
 
 
 
+class SafeDict(dict):
+    def __missing__(self, key):
+        return f'{{{key}}}'
+
+
 class Template():
     def format(self, context):
         return None
@@ -24,7 +29,7 @@ class HtmlTemplate(Template):
         return HtmlTemplate(template)
 
     def format(self, context):
-        return self.template.format(**context)
+        return self.template.format_map(SafeDict(context))
 
     def formatMultiple(self, contexts):
         html = ''
