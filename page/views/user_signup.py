@@ -7,7 +7,7 @@ settings = getDefaultSettings()
 
 
 
-def view(getData, postData, cookies):
+def view(getData, postData, cookies, sessionCookie):
     context = {}
 
     return HtmlTemplate.load('user_signup.html').format(context), []

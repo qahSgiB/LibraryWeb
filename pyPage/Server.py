@@ -5,13 +5,16 @@ import importlib.util
 from pyPage.DecodeData import decodeData
 from pyPage.Template import HtmlTemplate, PyTemplate
 from pyPage.Cookie import Cookie
+from pyPage.Logger import Logger
 
 
 
 class Server(BaseHTTPRequestHandler):
-    def __init__(self, routes, errorRoutes, *args, **params):
+    def __init__(self, routes, errorRoutes, logger, *args, **params):
         self.routes = routes
         self.errorRoutes = errorRoutes
+
+        self.logger = logger
 
         self.handleAsPublic = ['css', 'js', 'jpg', 'jpeg', 'png', 'ico']
         self.publicContentTypes = {
@@ -45,9 +48,11 @@ class Server(BaseHTTPRequestHandler):
 
         return cookies
 
-    def send(self, content, status, headers, cookies, encoding='UTF-8', isBytes=False):
+    def send(self, content, status, headers, cookies, path, encoding='UTF-8', isBytes=False):
         self.sendHeaders(status, headers, cookies)
         self.sendContent(content, encoding, isBytes)
+
+        self.logger.logHttp(self.client_address[0], path, status, headers, cookies)
 
     def sendHeaders(self, status, headers, cookies):
         self.send_response(status)
@@ -72,7 +77,7 @@ class Server(BaseHTTPRequestHandler):
         pathStringSplitted = pathString.split('?')
         path = pathStringSplitted[0]
 
-        getData = None
+        getData = []
 
         if len(pathStringSplitted) > 1:
             getDataString = pathStringSplitted[1]
@@ -95,7 +100,7 @@ class Server(BaseHTTPRequestHandler):
                 with open(errorContentPath, 'r') as contentFile:
                     content = contentFile.read()
 
-            self.send(content, status, headers, sendCookies)
+            self.send(content, status, headers, sendCookies, path)
         elif extension in self.handleAsPublic:
             content, status, headers, error, isBytes = self.handlePublic(path, extension)
 
@@ -103,7 +108,7 @@ class Server(BaseHTTPRequestHandler):
                 content = ''
                 headers['Content-type'] = 'text/plain'
 
-            self.send(content, status, headers, [], isBytes=isBytes)
+            self.send(content, status, headers, [], path, isBytes=isBytes)
 
     def handlePublic(self, path, extension):
         content = None
@@ -148,12 +153,18 @@ class Server(BaseHTTPRequestHandler):
                 module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(module)
 
-                if module.settings['isRedirect']:
+                settings = module.settings
+
+                if settings['isRedirect']:
+                    decorator = settings['onRedirectDecorator']
+
                     status = 303
-                    newLocation, sendCookies = module.redirect(getData, postData, cookies)
+                    newLocation, sendCookies = decorator(module.view)(getData, postData, cookies)
                     headers['Location'] = newLocation
                 else:
-                    content, sendCookies = module.view(getData, postData, cookies)
+                    decorator = settings['onViewDecorator']
+
+                    content, sendCookies = decorator(module.view)(getData, postData, cookies)
             else:
                 error = 'not_found'
                 status = 404

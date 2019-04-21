@@ -9,7 +9,7 @@ settings = getDefaultSettings()
 
 
 
-def view(getData, postData, cookies):
+def view(getData, postData, cookies, sessionCookie):
     searchBook = getData['search']
     resultBooks = findBooks(searchBook)
 

@@ -22,7 +22,13 @@ class Cookie():
         self.attrs['max-age'] = time
 
     def setExpirationTimeY(self, time):
-        self.attrs['max-age'] = time*31536000
+        self.setExpirationTime(time*31536000)
+
+    def setPath(self, path):
+        self.attrs['path'] = path
+
+    def setPathBase(self):
+        self.setPath('/')
 
     def getHTTP(self):
         cookie = SimpleCookie()

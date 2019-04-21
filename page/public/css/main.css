@@ -1,27 +1,7 @@
 div.base {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-}
-
-div.leftPanel {
-    width: 15vw;
-}
-
-div.mainPanel {
-    display: flex;
     flex-direction: column;
     align-items: center;
-
-    width: 70vw;
-}
-
-div.rightPanel {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-
-    width: 15vw;
 }
 
 div.logo {
@@ -66,6 +46,7 @@ p.infoFuture {
 input[type=text].search {
     border-style: solid;
     border-width: 1px;
+    border-color: rgb(0, 0, 0);
 
     font-size: 1.5vw;
     font-family: 'Montserrat', sans-serif;
@@ -76,27 +57,8 @@ input[type=text].search {
     padding-right: 1vw;
 }
 
-input[type=text].search:hover {
-    border-style: solid;
-    border-width: 1px;
-
-    padding-top: 0.5vw;
-    padding-bottom: 0.5vw;
-    padding-left: 1vw;
-    padding-right: 1vw;
-}
-
-
 input[type=text].search:focus {
     outline: none;
-
-    border-style: solid;
-    border-width: 1px;
-
-    padding-top: 0.5vw;
-    padding-bottom: 0.5vw;
-    padding-left: 1vw;
-    padding-right: 1vw;
 }
 
 input[type=submit].search {
@@ -124,40 +86,4 @@ input[type=submit].search:hover {
 
 input[type=submit].search:focus {
     outline: none;
-}
-
-div.account {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    margin-top: 2.5vw;
-    margin-right: 2.5vw;
-
-    padding-top: 1.5vw;
-    padding-bottom: 1.5vw;
-    padding-left: 1.9vw;
-    padding-right: 1.9vw;
-
-    border-style: solid;
-    border-width: 2px;
-    border-color: rgb(0, 0, 0);
-}
-
-a.account {
-    margin-top: 0.3vw;
-    margin-bottom: 0.3vw;
-
-    font-size: 1.2vw;
-    font-family: 'Montserrat', sans-serif;
-    color: rgb(0, 0, 0);
-
-    text-decoration-line: underline;
-    text-decoration-color: rgb(0, 0, 0);
-    text-decoration-style: solid;
-}
-
-a.account:hover, a.account:active {
-    text-decoration-line: line-through;
-    text-decoration-style: dashed;
 }

@@ -11,7 +11,7 @@ settings['isRedirect'] = True
 
 
 
-def redirect(getData, postData, cookies):
+def view(getData, postData, cookies):
     newUser = {
         'id': mongoInt64(getLastUserId()+1),
         'first_name': postData['first_name'],

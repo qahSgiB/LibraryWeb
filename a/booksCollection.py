@@ -1,4 +1,8 @@
-from a.mongo import booksCollection
+from a.mongo import databases
+
+
+
+booksCollection = databases['books']
 
 
 
