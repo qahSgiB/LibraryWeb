@@ -50,9 +50,6 @@ def checkSessionDecorator(viewF):
     def newViewF(getData, postData, cookies):
         sessionCookie = checkSession(cookies)
 
-        user = getSessionUser(sessionCookie.value)
-        print(user['mail'] if user != None else 'logged out')
-
         response, cookies = viewF(getData, postData, cookies, sessionCookie)
         cookies.append(sessionCookie)
 
@@ -62,3 +59,6 @@ def checkSessionDecorator(viewF):
 
 def login(sid, userId):
     setSessionUser(sid, userId)
+
+def logout(sid):
+    setSessionUser(sid, -1)

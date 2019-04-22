@@ -13,7 +13,16 @@ def render(baseContext):
     if user == None:
         context['account'] = HtmlTemplate.load('accountBase/logedout.html').format({})
     else:
-        context['account'] = HtmlTemplate.load('accountBase/logedin.html').format({})
+        firstName = user['first_name']
+        lastName = user['last_name']
+        name = f'{firstName} {lastName}'
+
+        accountContex = {
+            'name': name,
+            'mail': user['mail'],
+        }
+
+        context['account'] = HtmlTemplate.load('accountBase/logedin.html').format(accountContex)
 
     response = baseContext['response']
 

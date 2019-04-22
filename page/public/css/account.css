@@ -35,3 +35,21 @@ a.account:hover, a.account:active {
     text-decoration-line: line-through;
     text-decoration-style: dashed;
 }
+
+p.name {
+    margin-top: 0.3vw;
+    margin-bottom: 0.3vw;
+
+    font-size: 1.2vw;
+    font-family: 'Montserrat', sans-serif;
+    color: rgb(0, 0, 0);
+}
+
+p.mail {
+    margin-top: 0.2vw;
+    margin-bottom: 0.2vw;
+
+    font-size: 0.9vw;
+    font-family: 'Montserrat', sans-serif;
+    color: rgb(0, 0, 0);
+}
