@@ -9,7 +9,7 @@ def render(resultBookContext):
     if available > 0:
         availableText = f'{available} pieces available'
     elif available == 0:
-        availableText = 'Item is currently not avialable'
+        availableText = 'Book is currently not avialable'
 
     context = {
         'title': resultBookContext['title'],

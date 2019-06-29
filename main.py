@@ -2,7 +2,7 @@
 #   How to run this
 #       1. python main.py [https]
 #           https - run http server inside ssl socket
-#       2. In bowser open http://127.0.0.1:8080
+#       2. In bowser open http[s]://{address}:8080
 #
 
 def main():
@@ -24,7 +24,7 @@ def main():
         if useSSLCmd == 'https':
             useSSL = True
 
-    address = '192.168.1.4'
+    address = '192.168.1.3'
     port = 4434 if useSSL else 8080
     logOnlyHtml = True
     logCookies = True

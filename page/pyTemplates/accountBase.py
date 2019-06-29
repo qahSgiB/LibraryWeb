@@ -19,7 +19,6 @@ def render(baseContext):
 
         accountContex = {
             'name': name,
-            'mail': user['mail'],
         }
 
         context['account'] = HtmlTemplate.load('accountBase/logedin.html').format(accountContex)

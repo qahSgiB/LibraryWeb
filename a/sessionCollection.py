@@ -1,3 +1,5 @@
+from bson.int64 import Int64 as mongoInt64
+
 from a.mongo import databases
 from a.usersCollection import usersCollection
 
@@ -21,4 +23,6 @@ def addSession(session):
     sessionsCollection.insert_one(session)
 
 def setSessionUser(sid, newUser):
+    newUser = mongoInt64(newUser)
+
     sessionsCollection.update_one({'sid': sid}, {'$set': {'user': newUser}})
